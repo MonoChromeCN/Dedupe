@@ -1,101 +1,83 @@
 const BLACKLIST_URL = "https://raw.githubusercontent.com/MonoChromeCN/Dedupe/refs/heads/main/blacklist.txt";
+
 /**
- * 节点黑名单过滤脚本 - 最终修正版（支持深度嵌套搜索和兼容性优化）
+ * 深度提取对象中的所有字符串值
+ * @param {Object} obj 任意层级对象
+ * @returns {string[]} 所有字符串值的数组
  */
-// ===============================================
-// 递归深度搜索函数 (保持不变)
-// ===============================================
-function deepSearch(obj, blacklistRegexArray) {
-    if (typeof obj !== 'object' || obj === null) {
-        return null;
-    }
+function extractAllStrings(obj) {
+    let results = [];
 
-    for (const key in obj) {
-        if (!obj.hasOwnProperty(key)) continue;
-
-        const value = obj[key];
-
-        if (typeof value === 'string') {
-            const matchedRegex = blacklistRegexArray.find(regex => regex.test(value));
-            if (matchedRegex) {
-                return matchedRegex.source.replace(/\\/g, '');
-            }
-        } else if (typeof value === 'object' && value !== null) {
-            const deepMatch = deepSearch(value, blacklistRegexArray);
-            if (deepMatch) {
-                return deepMatch;
-            }
+    // 如果是数组，递归每一项
+    if (Array.isArray(obj)) {
+        for (const item of obj) {
+            results = results.concat(extractAllStrings(item));
         }
     }
-    return null;
-}
-
-// ===============================================
-// 异步加载和处理黑名单的函数 (新增/优化)
-// ===============================================
-async function loadAndProcessBlacklist() {
-    let blacklistRegexArray = [];
-    try {
-        const response = await fetch(BLACKLIST_URL);
-        if (!response.ok) {
-            console.error(`加载黑名单失败，状态码: ${response.status}`);
-            return null; // 返回 null 表示加载失败
+    // 如果是对象，递归其每个键
+    else if (typeof obj === "object" && obj !== null) {
+        for (const key in obj) {
+            if (!obj.hasOwnProperty(key)) continue;
+            results = results.concat(extractAllStrings(obj[key]));
         }
-
-        const text = await response.text();
-        
-        // 严格解析并对关键词进行正则转义
-        blacklistRegexArray = text.split(/[\r\n]+/)
-            .map(item => item.trim().replace(/[\t\s\uFEFF\xA0]+/g, ''))
-            .filter(item => item.length > 0)
-            .map(keyword => {
-                const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                return new RegExp(safeKeyword, 'gi'); 
-            });
-        
-        console.log(`成功加载 ${blacklistRegexArray.length} 个黑名单关键词。`);
-        return blacklistRegexArray;
-
-    } catch (error) {
-        console.error("加载黑名单发生异常:", error);
-        return null; // 返回 null 表示发生异常
     }
+    // 如果是字符串或数字，统一转为字符串收集
+    else if (["string", "number", "boolean"].includes(typeof obj)) {
+        results.push(String(obj).trim());
+    }
+
+    return results;
 }
 
-
-// ===============================================
-// 主操作函数 (operator) - 修正了返回逻辑
-// ===============================================
+/**
+ * 异步过滤函数
+ */
 async function operator(proxies) {
-    console.log("开始执行黑名单过滤脚本...");
-    
-    // 1. 等待加载并处理黑名单
-    const blacklistRegexArray = await loadAndProcessBlacklist();
-    
-    // 2. 检查黑名单是否有效
-    if (blacklistRegexArray === null || blacklistRegexArray.length === 0) {
-        // 如果加载失败或黑名单为空，直接返回原始列表
-        if (blacklistRegexArray === null) {
-             console.log("黑名单加载失败，跳过过滤。");
-        } else {
-             console.log("黑名单为空，跳过过滤。");
+    console.log("开始加载远程黑名单...");
+    let blacklist = [];
+
+    try {
+        const res = await fetch(BLACKLIST_URL);
+        if (!res.ok) {
+            console.error(`加载黑名单失败，状态码: ${res.status}`);
+            return proxies;
         }
+
+        const text = await res.text();
+        blacklist = text.split(/[\r\n]+/)
+                        .map(x => x.trim().replace(/[\t\s\uFEFF\xA0]+/g, ''))
+                        .filter(Boolean);
+
+        console.log(`成功加载 ${blacklist.length} 个黑名单关键词。`);
+    } catch (err) {
+        console.error("加载黑名单异常:", err);
         return proxies;
     }
 
-    // 3. 核心过滤逻辑
-    const filteredProxies = proxies.filter(proxy => {
-        // 使用递归函数对整个节点对象进行深度搜索
-        const matchedKey = deepSearch(proxy, blacklistRegexArray);
+    if (blacklist.length === 0) {
+        console.log("黑名单为空，无需过滤。");
+        return proxies;
+    }
 
-        if (matchedKey) {
-            console.log(`[已排除] 节点: ${proxy.name} (原因: 节点配置包含关键词 "${matchedKey}")`);
-            return false; // 排除
+    // 核心过滤逻辑：支持递归扫描
+    const filtered = proxies.filter(proxy => {
+        // 获取所有嵌套的字符串内容
+        const values = extractAllStrings(proxy).map(v => v.toLowerCase());
+
+        // 判断是否命中黑名单
+        const hit = blacklist.find(keyword => {
+            const k = keyword.toLowerCase();
+            return values.some(v => v.includes(k));
+        });
+
+        if (hit) {
+            console.log(`[已排除] 节点: ${proxy.name} (原因: 含黑名单关键词 "${hit}")`);
+            return false;
         }
-        
-        return true; // 保留
+
+        return true;
     });
 
-    console.log(`黑名单过滤完成。保留节点数: ${filteredProxies.length} / 原始节点数: ${proxies.length}`);
-    return filteredProxies;
+    console.log(`过滤完成。保留节点数: ${filtered.length} / 原始节点数: ${proxies.length}`);
+    return filtered;
 }
