@@ -26,8 +26,8 @@ async function operator(proxies) {
 
         const text = await response.text();
         // 将文件内容按行分割，并过滤掉空行和空白字符
-        blacklist = text.split('\n')
-                        .map(item => item.trim())
+        blacklist = text.split(/[\r\n]+/)
+                        .map(item => item.trim().replace(/[\t\s\uFEFF\xA0]+/g, '')) // 清理制表符、全角空格等
                         .filter(item => item.length > 0);
         
         console.log(`成功加载 ${blacklist.length} 个黑名单关键词。`);
