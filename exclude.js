@@ -4,7 +4,7 @@
  */
 
 // ** 替换成您实际的 GitHub RAW 文件链接 **
-const BLACKLIST_URL = "https://raw.githubusercontent.com/username/repo/blacklist.txt";
+const BLACKLIST_URL = "https://raw.githubusercontent.com/MonoChromeCN/Dedupe/refs/heads/main/blacklist.txt";
 
 /**
  * 异步获取黑名单内容并过滤节点
