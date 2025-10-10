@@ -1,0 +1,3 @@
+kejiland.freewarp.eu.org
+workers.dev
+pages.dev
