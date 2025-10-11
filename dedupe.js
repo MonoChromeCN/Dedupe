@@ -160,7 +160,9 @@ function operator(pro) {
     delete keyObject.password;
     delete keyObject.auth;
     delete keyObject.country;
-    delete keyObject.username
+    delete keyObject.username;
+    delete keyObject["client-fingerprint"];
+    
     // 建议：Sub-Store 可能会添加一些内部属性（如tag），为确保去重准确性，也一并移除。
     delete keyObject.tag;
     delete keyObject.group;
