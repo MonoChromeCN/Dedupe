@@ -25,6 +25,9 @@ function operator(proxies) {
         // 建议移除：由平台添加的内部属性
         delete keyObject.tag;
         delete keyObject.group;
+        delete keyObject.node_name;  // 某些工具可能用这个字段区分
+        delete keyObject.subscription_name; // 订阅名称
+        delete keyObject.source_url; // 原始订阅链接
 
         // 3. 将剩余属性对象转换为一个稳定的字符串 Key (配置指纹)
         const key = JSON.stringify(keyObject);
