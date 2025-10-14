@@ -21,7 +21,7 @@ function operator(proxies) {
         delete keyObject.username;
         delete keyObject["client-fingerprint"];
         delete keyObject.udp;
-        delete keyObject["skip-cert-verify"]
+        delete keyObject["skip-cert-verify"];
         
         // 建议移除：由平台添加的内部属性
         delete keyObject.tag;
