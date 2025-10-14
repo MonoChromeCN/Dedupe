@@ -20,6 +20,7 @@ function operator(proxies) {
         delete keyObject.country;
         delete keyObject.username;
         delete keyObject["client-fingerprint"];
+        delete keyObject.udp;
         
         // 建议移除：由平台添加的内部属性
         delete keyObject.tag;
