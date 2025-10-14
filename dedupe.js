@@ -28,6 +28,12 @@ function operator(proxies) {
         delete keyObject.node_name;  // 某些工具可能用这个字段区分
         delete keyObject.subscription_name; // 订阅名称
         delete keyObject.source_url; // 原始订阅链接
+        delete keyObject._subName;
+        delete keyObject.subName;
+        delete keyObject.["sub.name"];
+        delete keyObject.subDisplayName;
+        delete keyObject._subDisplayName;
+        delete keyObject.["sub.displayName"];
 
         // 3. 将剩余属性对象转换为一个稳定的字符串 Key (配置指纹)
         const key = JSON.stringify(keyObject);
