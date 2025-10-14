@@ -22,7 +22,9 @@ function operator(proxies) {
         delete keyObject["client-fingerprint"];
         delete keyObject.udp;
         delete keyObject["skip-cert-verify"];
-        
+        delete keyObject.tfo;
+        delete keyObject["disable-sni"];
+        delete keyObject.tls;
         // 建议移除：由平台添加的内部属性
         delete keyObject.tag;
         delete keyObject.group;
