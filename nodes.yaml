@@ -1,6 +1,10 @@
 proxies:
   - {"cipher":"chacha20-ietf-poly1305","name":"🇯🇵 日本 15","password":"t0srmdxrm3xyjnvqz9ewlxb2myq7rjuv","plugin":"obfs","plugin-opts":{"host":"403880e.default.microsoft.io:164892","mode":"tls"},"port":2377,"server":"403880e.j6.gladns.com","type":"ss","udp":true}
   - {"name":"🇯🇵 日本 24","password":"qQe1z5kU8kN6SlKnDt9Ru3Qp","port":443,"server":"vpn-jp-001.fastervpn.world","skip-cert-verify":true,"sni":"vpn-jp-001.fastervpn.world","type":"hysteria2","udp":true}
+  - {"down":"","fingerprint":"","name":"🇯🇵 日本 66","obfs":"","obfs-password":"","password":"qQe1z5kU8kN6SlKnDt9Ru3Qp","port":443,"server":"vpn-jp-004.fastervpn.world","skip-cert-verify":true,"sni":"vpn-jp-004.fastervpn.world","type":"hysteria2","up":"","udp":true}
+  - {"alterId":0,"cipher":"auto","name":"🇯🇵 日本 68","network":"ws","port":80,"server":"jp01.a0a.xyz","skip-cert-verify":false,"tls":false,"type":"vmess","udp":true,"uuid":"11c3627f-31e8-4695-dfbd-34076e2f1f5d","ws-opts":{"headers":{"Host":"jp01.a0a.xyz"},"path":"/cctv13.m3u8"},"xudp":true}
+  - {"down":"","fingerprint":"","name":"🇯🇵 日本 97","obfs":"","obfs-password":"","password":"qQe1z5kU8kN6SlKnDt9Ru3Qp","port":443,"server":"vpn-jp-003.fastervpn.world","skip-cert-verify":true,"sni":"vpn-jp-003.fastervpn.world","type":"hysteria2","up":"","udp":true}
+  - {"name":"🇯🇵 日本 99","password":"qQe1z5kU8kN6SlKnDt9Ru3Qp","port":443,"server":"vpn-jp-002.fastervpn.world","skip-cert-verify":true,"sni":"vpn-jp-002.fastervpn.world","type":"hysteria2","udp":true}
   - {"cipher":"chacha20-ietf-poly1305","name":"🇬🇧 英国 10","password":"k1dBOmOB4oqi7Ump37a1bQ","port":8080,"server":"82.38.31.217","type":"ss","udp":true}
   - {"cipher":"chacha20-ietf-poly1305","name":"🇬🇧 英国 13","password":"k1dBOmOB4oqi7Ump37a1bQ","port":8080,"server":"82.38.31.210","type":"ss","udp":true}
   - {"cipher":"chacha20-ietf-poly1305","name":"🇬🇧 英国 14","password":"k1dBOmOB4oqi7Ump37a1bQ","port":8080,"server":"82.38.31.176","type":"ss","udp":true}
@@ -19,3 +23,4 @@ proxies:
   - {"alterId":"0","cipher":"auto","name":"🇺🇸 美国 49","network":"tcp","port":180,"server":"82.198.246.250","skip-cert-verify":false,"tls":false,"type":"vmess","udp":true,"uuid":"d13fc2f5-3e05-4795-81eb-44143a09e552","xudp":true}
   - {"alterId":"0","cipher":"auto","name":"🇺🇸 美国 52","network":"tcp","port":180,"server":"82.198.246.37","skip-cert-verify":false,"tls":false,"type":"vmess","udp":true,"uuid":"d13fc2f5-3e05-4795-81eb-44143a09e552","xudp":true}
   - {"alterId":"0","cipher":"auto","name":"🇺🇸 美国 86","network":"tcp","port":180,"server":"82.198.246.97","skip-cert-verify":false,"tls":false,"type":"vmess","udp":true,"uuid":"d13fc2f5-3e05-4795-81eb-44143a09e552","xudp":true}
+  - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision-udp443","name":"🇭🇰 香港 48","port":30000,"security":"tls","server":"hk1.ap221.com","tls":true,"type":"vless","uuid":"8830c102-fdd9-4765-98be-b1e012f4fb55","network":"tcp","udp":true,"servername":"hk.ap221.com"}
