@@ -16,6 +16,4 @@
 8.209.231.3:443#JP
 47.239.189.60:443#HK
 47.76.60.217:7547#HK
-gho202.icuvdproduction.org#第三方
-gho201.icuvdproduction.org#官方
 jvfawcqb.tencentapp.cn#官方
