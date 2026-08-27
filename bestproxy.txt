@@ -1,4 +1,4 @@
 139.224.43.79:443#CN
 154.19.187.190:443#JP
-jvfawcqb.tencentapp.cn#官方
+114.32.9.249:443#TW
 cloudflare.182682.xyz#官方
